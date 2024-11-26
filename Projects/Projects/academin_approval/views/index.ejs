@@ -1,0 +1,138 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xyz</title>
+    <style>
+        /* Resetting some default styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Light grey background */
+            color: #333; /* Dark text color */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10rem;
+            /* justify-content: start; */
+            height: 100vh; /* Full height of the viewport */
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px; /* Space below the heading */
+            color: #0056b3; /* Dark blue color for the heading */
+        }
+
+        a {
+            text-decoration: none; /* Remove underline from links */
+            color: white; /* White text color */
+            background-color: #000; /* Blue background for links */
+            padding: 10px 20px; /* Padding around the link text */
+            border-radius: 5px; /* Rounded corners */
+            margin: 5px; /* Space around the buttons */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Dealing System</h1>
+    <div>
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+    </div>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dealing System</title>
+    <style>
+        /* Resetting some default styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Light grey background */
+            color: #333; /* Dark text color */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 14rem;
+            height: 100vh; /* Full height of the viewport */
+            text-align: center;
+        }
+
+        h1 {
+            color: #0056b3; /* Dark blue color for the heading */
+            border-right: 2px solid #007bff; /* Cursor effect */
+            white-space: nowrap; /* Prevent text wrap */
+            overflow: hidden; /* Hide the overflow */
+            animation: blink-caret 0.75s step-end infinite; /* Cursor blinking effect */
+        }
+
+        /* Cursor blinking effect */
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #007bff; }
+        }
+
+        a {
+            text-decoration: none; /* Remove underline from links */
+            color: white; /* White text color */
+            background-color: #000; /* Blue background for links */
+            padding: 10px 20px; /* Padding around the link text */
+            border-radius: 5px; /* Rounded corners */
+            margin: 5px; /* Space around the buttons */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        a:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1></h1> <!-- Empty h1 for typing effect -->
+    <div>
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+    </div>
+
+    <script>
+        const heading = "Student Admission Dealing System"; // Text to be typed
+        const h1 = document.querySelector("h1"); // Select the h1 element
+        let index = 0; // Index to track the current character
+        let typingSpeed = 100; // Speed of typing (in milliseconds)
+        let deletingSpeed = 50; // Speed of deleting (in milliseconds)
+
+        function type() {
+            if (index < heading.length) {
+                h1.textContent += heading.charAt(index); // Add character to h1
+                index++;
+                setTimeout(type, typingSpeed); // Continue typing
+            } else {
+                setTimeout(deleteText, 1000); // Wait before starting to delete
+            }
+        }
+
+        function deleteText() {
+            if (index > 0) {
+                h1.textContent = heading.substring(0, index - 1); // Remove character from h1
+                index--;
+                setTimeout(deleteText, deletingSpeed); // Continue deleting
+            } else {
+                index = 0; // Reset index for typing again
+                setTimeout(type, 500); // Wait before starting to type again
+            }
+        }
+        type();
+    </script>
+</body>
+</html>

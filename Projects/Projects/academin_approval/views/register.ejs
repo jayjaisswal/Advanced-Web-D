@@ -1,0 +1,117 @@
+<!-- views/register.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f4f7;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #000;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #000;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 500px) {
+            body {
+                padding: 10px;
+            }
+
+            form {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form action="/register" method="POST">
+        <h1>Register</h1>
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br>
+
+        <label for="role">Role:</label>
+        <select name="role" required>
+            <option value="Dealing Hand">Dealing Hand</option>
+            <option value="Dean Academic">Dean Academic</option>
+            <option value="Dr. Academics">Dr. Academics</option>
+            <option value="Section In-Charge">Section In-Charge</option>
+        </select><br>
+        <button type="submit">Register</button>
+        <a href="/login">Already have an account? Login</a>
+    </form>
+    
+</body>
+</html>

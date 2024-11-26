@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    /* style.css */
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #8e95ef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    border: 9px solid black;
+    
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.month-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.month-group {
+    width: 45%;
+}
+
+.month-group h2 {
+    text-align: center;
+}
+
+.month-group input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.month-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.month-group button:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+li {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#compare-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+#compare-btn:hover {
+    background-color: #218838;
+}
+
+canvas {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+
+</style>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>FUNFIN</h1>
+        <div class="month-container">
+            <div class="month-group">
+                <h2>Month 1</h2>
+                <input type="text" id="month1-item" placeholder="Enter Item">
+                <input type="number" id="month1-amount" placeholder="Enter Amount">
+                <button id="month1-add-btn">Add Expense</button>
+                <ul id="month1-expense-list"></ul>
+                <h3>Total: $<span id="month1-total">0</span></h3>
+            </div>
+            <div class="month-group">
+                <h2>Month 2</h2>
+                <input type="text" id="month2-item" placeholder="Enter Item">
+                <input type="number" id="month2-amount" placeholder="Enter Amount">
+                <button id="month2-add-btn">Add Expense</button>
+                <ul id="month2-expense-list"></ul>
+                <h3>Total: $<span id="month2-total">0</span></h3>
+            </div>
+        </div>
+        <button id="compare-btn">Budget compare</button>
+        <canvas id="comparison-chart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script ></script>
+</body>
+</html>
+
+    <script >
+        // script.js
+// script.js
+// script.js
+document.getElementById('month1-add-btn').addEventListener('click', function() {
+    addExpense('month1');
+});
+
+document.getElementById('month2-add-btn').addEventListener('click', function() {
+    addExpense('month2');
+});
+
+document.getElementById('compare-btn').addEventListener('click', function() {
+    compareExpenses();
+});
+
+function addExpense(month) {
+    const item = document.getElementById(`${month}-item`).value;
+    const amount = parseFloat(document.getElementById(`${month}-amount`).value);
+
+    if (item && !isNaN(amount)) {
+        const expenseList = document.getElementById(`${month}-expense-list`);
+        const listItem = document.createElement('li');
+        listItem.textContent = `${item}: $${amount.toFixed(2)}`;
+        expenseList.appendChild(listItem);
+
+        updateTotal(month, amount);
+
+        // Clear input fields
+        document.getElementById(`${month}-item`).value = '';
+        document.getElementById(`${month}-amount`).value = '';
+    } else {
+        alert('Please enter a valid item and amount');
+    }
+}
+
+function updateTotal(month, amount) {
+    const totalElement = document.getElementById(`${month}-total`);
+    const currentTotal = parseFloat(totalElement.textContent);
+    totalElement.textContent = (currentTotal + amount).toFixed(2);
+}
+
+function compareExpenses() {
+    const month1Total = parseFloat(document.getElementById('month1-total').textContent);
+    const month2Total = parseFloat(document.getElementById('month2-total').textContent);
+
+    const ctx = document.getElementById('comparison-chart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Month 1', 'Month 2'],
+            datasets: [{
+                label: 'Total Expenses',
+                data: [month1Total, month2Total],
+                backgroundColor: ['#007bff', '#28a745']
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+    </script>
+</body>
+</html>

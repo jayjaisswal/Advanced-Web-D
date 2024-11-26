@@ -1,0 +1,113 @@
+<!-- views/section-incharge.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <title>Section In-Charge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f4f7;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 15px; /* Reduced padding for a less zoomed-in look */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px; /* Adjusted width for better fit */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 15px; /* Reduced margin */
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px; /* Reduced margin */
+            font-weight: bold;
+            color: #333;
+            font-size: 14px; /* Reduced font size */
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px; /* Reduced padding for input fields */
+            margin-bottom: 12px; /* Reduced margin */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px; /* Reduced font size */
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px; /* Adjusted min-height for better fit */
+        }
+
+        input[readonly],
+        textarea[readonly] {
+            background-color: #f9f9f9;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px; /* Maintained button font size for clarity */
+            cursor: pointer;
+        }
+
+        .no-forms {
+            text-align: center;
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    
+    <form action="/section-incharge" method="POST">
+                <h1>Section In-Charge</h1>
+                <label for="rollNumber">Roll Number:</label>
+                <input type="text" name="rollNumber" value="<%= form.rollNumber %>" readonly><br>
+        
+                <label for="semester">Semester:</label>
+                <input type="text" name="semester" value="<%= form.semester %>" readonly><br>
+        
+                <label for="studentName">Student Name:</label>
+                <input type="text" name="studentName" value="<%= form.studentEmail %>" readonly><br>
+        
+                <label for="dealingHandRemark">Dealing Hand Remark:</label>
+                <textarea name="dealingHandRemark" readonly><%= form.dealingHandRemark %></textarea><br>
+    
+                <label for="dealingHandRemark">Dean Academics Remark:</label>
+                <textarea name="dealingHandRemark" rows="4" readonly><%= form.deanRemark %></textarea><br>
+
+                <label for="dealingHandRemark">Dr. Academic Remark:</label>
+                <textarea name="dealingHandRemark" rows="4" readonly><%= form.drRemark %></textarea><br>
+
+                <input type="hidden" name="rollno" value="<%= form.rollNumber %>"> 
+                <label for="remark">Section In-Charge Remark</label>
+                <textarea name="remark" required></textarea><br>
+            <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

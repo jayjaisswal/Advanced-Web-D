@@ -1,0 +1,159 @@
+/* Base Styles */
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #e9f5f8;
+    color: #333;
+}
+
+/* Main Heading */
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* Container */
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Styling */
+.form_data {
+    margin: 0 auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-size: 1rem;
+}
+
+input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.4);
+    outline: none;
+}
+
+/* Button Styling */
+button {
+    padding: 12px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+h2 {
+    margin-top: 20px;
+    text-align: center;
+    color: #555;
+    font-size: 1.8rem;
+}
+
+/* QR Code Reader */
+/* QR Code Reader */
+#reader {
+    margin-top: 20px;
+    border: 2px dashed #2ecc71;
+    border-radius: 8px;
+    background-color: #f0fcf4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Updated size for better visibility */
+    width: 80%;
+    height: 500px;
+    max-width: 600px;
+    min-width: 300px;
+    min-height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#scan-result {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+    color: #27ae60;
+    font-size: 1.2rem;
+}
+
+.scnn_part {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+    transition: color 0.2s;
+}
+
+.close:hover {
+    color: #333;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    #reader {
+        width: 90%;
+        height: 300px;
+        max-width: 100%;
+        margin: 10px auto;
+    }
+}

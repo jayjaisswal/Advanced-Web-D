@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Expense Tracker</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Family Expense Tracker</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Member</th>
+                    <th>Cost</th>
+                    <th>Month</th>
+                </tr>
+            </thead>
+            <tbody id="expenseTable">
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Total Expenses</h2>
+                <p>Month 1: <span id="month1Total"></span></p>
+                <p>Month 2: <span id="month2Total"></span></p>
+            </div>
+            <div class="col-md-6">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+
+        <button id="addExpenseBtn">Add Expense</button>
+
+        <script>
+            const expenseTable = document.getElementById('expenseTable');
+            const month1TotalElement = document.getElementById('month1Total');
+            const month2TotalElement = document.getElementById('month2Total');
+            const addExpenseBtn = document.getElementById('addExpenseBtn');
+            const myChartCanvas = document.getElementById('myChart');
+
+            let expenses = [];
+            let chartInstance = null;
+
+            function addExpense() {
+                const product = prompt('Enter product name');
+                const member = prompt('Enter member name');
+                const cost = parseFloat(prompt('Enter cost'));
+                const month = parseInt(prompt('Enter month (1 or 2)'));
+
+                if (!product || !member || isNaN(cost) || isNaN(month) || (month !== 1 && month !== 2)) {
+                    alert("Please enter valid inputs.");
+                    return;
+                }
+
+                expenses.push({ product, member, cost, month });
+                updateTable();
+                calculateTotals();
+                updateChart();
+            }
+
+            function updateTable() {
+                expenseTable.innerHTML = '';
+
+                expenses.forEach(expense => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${expense.product}</td>
+                        <td>${expense.member}</td>
+                        <td>${expense.cost.toFixed(2)}</td>
+                        <td>${expense.month}</td>
+                    `;
+                    expenseTable.appendChild(row);
+                });
+            }
+
+            function calculateTotals() {
+                const month1Total = expenses.reduce((total, expense) => expense.month === 1 ? total + expense.cost : total, 0);
+                const month2Total = expenses.reduce((total, expense) => expense.month === 2 ? total + expense.cost : total, 0);
+
+                month1TotalElement.textContent = month1Total.toFixed(2);
+                month2TotalElement.textContent = month2Total.toFixed(2);
+            }
+
+            function updateChart() {
+                const month1Total = expenses.filter(expense => expense.month === 1).reduce((total, expense) => total + expense.cost, 0);
+                const month2Total = expenses.filter(expense => expense.month === 2).reduce((total, expense) => total + expense.cost, 0);
+
+                const data = {
+                    labels: ['Month 1', 'Month 2'],
+                    datasets: [{
+                        label: 'Total Expenses',
+                        data: [month1Total, month2Total],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                };
+
+                const config = {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                };
+
+                if (chartInstance) {
+                    chartInstance.destroy(); // Clear previous chart instance if it exists
+                }
+
+                chartInstance = new Chart(myChartCanvas.getContext('2d'), config);
+            }
+
+            addExpenseBtn.addEventListener('click', addExpense);
+        </script>
+    </div>
+</body>
+</html>

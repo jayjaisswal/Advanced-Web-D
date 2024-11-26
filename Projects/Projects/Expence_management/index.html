@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Expense Management</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        /* Center the login container */
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style the heading */
+        .login-container h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Style the form labels */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Style the input fields */
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        /* Style the button */
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5cb85c;
+            border: none;
+            border-radius: 3px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Change button color on hover */
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        /* Style the error message */
+        #error-message {
+            color: red;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        /* Style the registration link */
+        p {
+            text-align: center;
+            color: #555;
+        }
+
+        p a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+
+            <label for="role">Login as:</label>
+            <select id="role">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+
+            <button type="submit">Login</button>
+        </form>
+        <p id="error-message"></p>
+        <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </div>
+    <script>
+        // Load users from localStorage
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Login logic
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+
+            const user = users.find(u => u.username === username && u.password === password && u.role === role);
+
+            if (user) {
+                alert(`${role} logged in successfully`);
+                window.location.href = role === 'admin' ? 'admin.html' : 'user.html';
+            } else {
+                document.getElementById('error-message').textContent = 'Invalid login credentials';
+            }
+        });
+    </script>
+</body>
+
+</html>

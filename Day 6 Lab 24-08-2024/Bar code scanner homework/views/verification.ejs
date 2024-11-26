@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Verification Details</h2>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">QR Data: <strong><%= qrData %></strong></h5>
+        </div>
+    </div>
+
+    <h3 class="mt-4">Scan QR Code</h3>
+    <video id="video" width="300" height="300" style="border: 1px solid black;"></video>
+    <button id="scanButton" class="btn btn-success mt-2">Start Scanning</button>
+
+    <div id="result" class="mt-3"></div>
+</div>
+
+<script>
+    const codeReader = new ZXing.BrowserQRCodeReader();
+
+    $('#scanButton').click(function() {
+        const video = document.getElementById('video');
+        codeReader.decodeFromVideoDevice(null, video, (result, err) => {
+            if (result) {
+                // Send scanned data to server for verification
+                $.post('/check', { scannedData: result.text }, function(response) {
+                    if (response.verified) {
+                        $('#result').html(`<div class="alert alert-success">User verified!<br>Name: ${response.user.name}<br>Age: ${response.user.age}</div>`);
+                    } else {
+                        $('#result').html('<div class="alert alert-danger">User not verified.</div>');
+                    }
+                });
+            }
+            if (err) {
+                console.error(err);
+            }
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

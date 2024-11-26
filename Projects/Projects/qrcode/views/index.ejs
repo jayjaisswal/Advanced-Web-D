@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"
+        integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+
+<body>
+    <h1>Generate QR Code</h1>
+    <div class="form_data">
+        <form action="/create" method="POST">
+            <input type="text" name="userid" placeholder="User ID" required>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Generate QR Code</button>
+        </form>
+    </div>
+    <div class="scnn_part">
+        <% if (qrCodeData) { %>
+            <h2>Your QR Code:</h2>
+            <img src="<%= qrCodeData %>" alt="QR Code" id="qr_code_img">
+            <button id="start-scan">Start QR Code Scan</button>
+            <div id="reader"></div>
+            <% } %>
+    </div>
+
+    <!-- Modal for displaying messages -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-message"></p>
+            <div id="scan-result"></div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('start-scan').addEventListener('click', function () {
+            // Initialize the QR Code reader
+            const html5QrCode = new Html5Qrcode("reader");
+            // Start scanning
+            html5QrCode.start(
+                { facingMode: "environment" }, // Use the rear camera
+                {
+                    fps: 10,    // Frames per second
+                    qrbox: 250  // Size of QR box
+                },
+                (decodedText, decodedResult) => {
+                    // Handle the result
+                    document.getElementById('scan-result').innerText = decodedText;
+                    // Stop scanning after successful scan
+                    html5QrCode.stop().then(() => {
+                        // Stop success callback
+                    }).catch(err => {
+                        console.warn('Failed to stop scanning:', err);
+                    });
+
+                    // Here you can make a POST request to your server to verify the QR code
+                    verifyQRCode(decodedText);
+                },
+                (errorMessage) => {
+                    // Handle scanning error
+                    console.warn(`QR code scan error: ${errorMessage}`);
+                }
+            ).catch(err => {
+                console.error(`Unable to start scanning: ${err}`);
+            });
+        });
+
+        function verifyQRCode(scannedQrData) 
+        {
+            fetch('/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ scannedQrData })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const modalMessage = document.getElementById('modal-message');
+                    const modal = document.getElementById('myModal');
+                    if (data.success) {
+
+                        modalMessage.innerText = data.message;
+                        modal.style.display = "block"; // Show the modal
+                    }
+                    else {
+                        modalMessage.innerText = 'Verification failed: ' + data.message;
+                        modal.style.display = "block"; // Show the modal
+                    }
+                })
+                .catch(err => {
+                    console.error('Error verifying QR code:', err);
+                });
+        }
+        // Close the modal when the user clicks on <span> (x)
+        document.querySelector('.close').onclick = function () {
+            document.getElementById('myModal').style.display = "none";
+        }
+        // Close the modal when the user clicks anywhere outside of the modal
+        window.onclick = function (event) {
+            const modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

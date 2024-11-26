@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #user-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        #seats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .seat {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .seat.booked {
+            background-color: #FF5733;
+        }
+
+        .seat.available {
+            background-color: #4CAF50;
+        }
+
+        .seat:hover {
+            background-color: #45a049;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 80%;
+        }
+
+        .cancel-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        button,
+        .cancel-btn {
+            margin-top: 10px;
+        }
+
+        #confirmBtn,
+        #backBtn {
+            background-color: black;
+            color: #fff;
+            padding: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #backBtn:hover,
+        #confirmBtn:hover {
+            border-radius: 4rem;
+        }
+
+        /* Modal styles */
+        #modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        #modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Seat Booking</h1>
+        <div id="user-info"></div>
+        <div id="seats-container">
+            <div id="seats"></div>
+        </div>
+        <button id="confirmBtn">Confirm Booking</button>
+        <button id="backBtn">Back to Home</button>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal">
+        <div id="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-message"></p>
+        </div>
+    </div>
+    <script src="scripts/booking.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .user-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .item-list {
+            margin-top: 20px;
+        }
+        .item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        canvas {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    
+    <div id="user-container"></div> <!-- Container for users -->
+    <canvas id="expensesChart"></canvas> <!-- Chart canvas -->
+
+    <script>
+        let users = JSON.parse(localStorage.getItem('users')) || [
+            { username: "User1", items: [], id: "user1" },
+            { username: "User2", items: [], id: "user2" },
+        ];
+
+        let items = JSON.parse(localStorage.getItem('items')) || [];
+
+        // Initialize items for users
+        users.forEach(user => {
+            user.items = items.filter(item => item.userId === user.id);
+        });
+
+        function renderUsers() {
+            const userContainer = document.getElementById('user-container');
+            userContainer.innerHTML = ''; // Clear previous user data
+
+            users.forEach(user => {
+                const userDiv = document.createElement('div');
+                userDiv.classList.add('user-container');
+                userDiv.innerHTML = `<h2>${user.username}</h2>`;
+                
+                const itemList = document.createElement('div');
+                itemList.classList.add('item-list');
+
+                // Show items for the admin
+                user.items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.classList.add('item');
+                    itemDiv.innerHTML = `
+                        <span>${item.name} - ₹${item.price} (${item.category}) on ${item.date}</span>
+                        <div class="item-buttons">
+                            <button onclick="showEditItemForm('${item.id}', '${user.id}', '${item.name}', ${item.price}, '${item.date}', '${item.category}')">Edit</button>
+                            <button onclick="deleteItem('${item.id}', '${user.id}')">Delete</button>
+                        </div>
+                    `;
+                    itemList.appendChild(itemDiv);
+                });
+
+                userDiv.appendChild(itemList);
+                userContainer.appendChild(userDiv);
+            });
+
+            renderChart(); // Render chart after users are rendered
+        }
+
+        function showEditItemForm(itemId, userId, name, price, date, category) {
+            const itemDiv = document.createElement('div');
+            itemDiv.innerHTML = ` 
+                <h3>Edit Item</h3>
+                <input type="text" id="editItemName" placeholder="Item Name" value="${name}">
+                <input type="number" id="editItemPrice" placeholder="Item Price" value="${price}">
+                <input type="date" id="editItemDate" placeholder="Item Date" value="${date}">
+                <input type="text" id="editItemCategory" placeholder="Item Category" value="${category}">
+                <button onclick="updateItem('${itemId}', '${userId}')">Update</button>
+                <button onclick="closeEditItemForm()">Cancel</button>
+            `;
+            document.getElementById('user-container').appendChild(itemDiv);
+        }
+
+        function closeEditItemForm() {
+            const userContainer = document.getElementById('user-container');
+            const lastChild = userContainer.lastChild;
+            if (lastChild && lastChild.tagName !== "H1" && lastChild.tagName !== "H2") {
+                userContainer.removeChild(lastChild); // Remove the last child (edit form)
+            }
+        }
+
+        function updateItem(itemId, userId) {
+            const itemName = document.getElementById('editItemName').value;
+            const itemPrice = document.getElementById('editItemPrice').value;
+            const itemDate = document.getElementById('editItemDate').value;
+            const itemCategory = document.getElementById('editItemCategory').value;
+
+            // Find the index of the item to update using string comparison
+            const itemIndex = items.findIndex(item => item.id === itemId && item.userId === userId);
+            if (itemIndex !== -1) {
+                items[itemIndex] = {
+                    id: itemId, // Keep the same ID as a string
+                    name: itemName,
+                    price: Number(itemPrice), // Price should remain a number
+                    date: itemDate,
+                    category: itemCategory,
+                    userId: userId,
+                };
+                localStorage.setItem('items', JSON.stringify(items));
+                renderUsers(); // Re-render the users
+                closeEditItemForm(); // Close the form after updating
+            } else {
+                console.error("Item not found for update");
+            }
+        }
+
+        function deleteItem(itemId, userId) {
+            // Find the index of the item to delete using string comparison
+            const itemIndex = items.findIndex(item => item.id === itemId && item.userId === userId);
+            if (itemIndex !== -1) {
+                items.splice(itemIndex, 1); // Remove the item
+                localStorage.setItem('items', JSON.stringify(items));
+                renderUsers(); // Re-render the users
+            } else {
+                console.error("Item not found for deletion");
+            }
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('expensesChart').getContext('2d');
+            const categories = {};
+            
+            // Aggregate item prices by category
+            items.forEach(item => {
+                if (categories[item.category]) {
+                    categories[item.category] += item.price;
+                } else {
+                    categories[item.category] = item.price;
+                }
+            });
+
+            const chartData = {
+                labels: Object.keys(categories),
+                datasets: [{
+                    label: 'Total Expenses per Category',
+                    data: Object.values(categories),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                    ],
+                    borderWidth: 1,
+                }]
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initial rendering of users and their items
+        renderUsers();
+    </script>
+</body>
+</html>

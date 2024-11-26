@@ -1,0 +1,154 @@
+<!-- views/print-details.ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Print Details</title>
+</head>
+<body>
+    <h1>Student Form Details</h1>
+    
+    <p><strong>Roll Number:</strong> <%= form.rollNumber %></p>
+    <p><strong>Student Name:</strong> <%= form.studentName %></p>
+    <p><strong>Student Email:</strong> <%= form.studentEmail %></p>
+    <p><strong>Semester:</strong> <%= form.semester %></p>
+    
+    <h2>Remarks</h2>
+    <p><strong>Dealing Hand Remark:</strong> <%= form.dealingHandRemark %></p>
+    <p><strong>Dean Remark:</strong> <%= form.deanRemark %></p>
+    <p><strong>DR Remark:</strong> <%= form.drRemark %></p>
+    <p><strong>Section In-Charge Remark:</strong> <%= form.sectionInchargeRemark %></p>
+    
+    <p><strong>Status:</strong> <%= form.status %></p>
+
+    <button onclick="window.print()">Print</button> 
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Details</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Light background for web view */
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0056b3; /* Dark blue color for the main heading */
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #007BFF; /* Blue color for subheadings */
+        }
+
+        p {
+            font-size: 16px; /* Clear font size for readability */
+            line-height: 1.5; /* Better line spacing */
+            margin-bottom: 10px;
+        }
+
+        strong {
+            color: #333; /* Darker color for labels */
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #28a745; /* Green button color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+        .contaner
+        {
+            display: flex;
+            flex-direction: column;
+            align-self: center;
+            justify-content: center;
+            margin-right: 4rem;
+            margin-left: 34rem;
+            text-align: left;
+        }
+
+        @media(max-width:600px)
+        {
+        .contaner
+        {
+            
+            margin-right: 0rem;
+            margin-left: 1rem;
+            /* text-align: left; */
+        }
+        }
+        /* Print styles */
+        @media print {
+            body {
+                background-color: white; /* White background for printing */
+                color: #000; /* Black text for printing */
+            }
+
+            button {
+                display: none; /* Hide button when printing */
+            }
+
+            h1, h2 {
+                page-break-after: avoid; /* Avoid page break after headings */
+            }
+
+            p {
+                margin-bottom: 15px; /* Adjust margins for print */
+            }
+
+            strong {
+                font-weight: bold; /* Bold labels for print */
+            }
+            .contaner
+            {
+                
+                margin-right: 0rem;
+                margin-left: 1rem;
+            }
+        }
+       
+    </style>
+</head>
+<body>
+    <h1>Student Form Details</h1>
+     <div class="contaner">
+    <p><strong>Roll Number:</strong> <%= form.rollNumber %></p>
+    <p><strong>Student Name:</strong> <%= form.studentName %></p>
+    <p><strong>Student Email:</strong> <%= form.studentEmail %></p>
+    <p><strong>Semester:</strong> <%= form.semester %></p>
+    <h2>Remarks</h2>
+    <p><strong>Dealing Hand Remark:</strong> <%= form.dealingHandRemark %></p>
+    <p><strong>Dean Remark:</strong> <%= form.deanRemark %></p>
+    <p><strong>Dr. Remark:</strong> <%= form.drRemark %></p>
+    <p><strong>Section In-Charge Remark:</strong> <%= form.sectionInchargeRemark %></p>
+
+    <p><strong>Status:</strong> <%= form.status %></p>
+
+     </div>
+    <button onclick="window.print()">Print</button>
+</body>
+</html>
+

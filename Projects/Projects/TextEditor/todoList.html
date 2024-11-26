@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        #addTaskBtn
+        {
+            font-size: 14px;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 110px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #000;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        li.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .editBtn,
+        .deleteBtn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #000;
+            margin-left: 10px;
+        }
+
+        .editBtn:hover,
+        .deleteBtn:hover {
+            text-decoration: underline;
+        }
+
+        .task-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        #radio_btn
+        {
+            margin-left: 13px;
+        }
+        @media(max-width:658px) {
+            body {
+                padding: 0;
+                margin: 0;
+            }
+
+            .container {
+                width: 100%;
+                padding: 1rem 10px 10px 10px;
+            }
+
+            .task-controls {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Add a new task...">
+        <button id="addTaskBtn"><i class="fa-solid fa-plus"></i></button>
+        <ul id="taskList"></ul>
+    </div>
+    <script>
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        function renderTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="${task.completed ? 'completed' : ''}">${task.name}</span>
+                    <div class="task-controls">
+                        <button class="deleteBtn" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></button>
+                        <input type="checkbox" id="radio_btn"  onchange="toggleTask(${index})" ${task.completed ? 'checked' : ''}>
+                        <button class="editBtn" onclick="editTask(${index})"><i class="fas fa-edit"></i></button>
+                    </div>
+                `;
+                
+                taskList.appendChild(li);
+            });
+        }
+
+        document.getElementById('addTaskBtn').onclick = function () {
+            const taskInput = document.getElementById('taskInput');
+            const taskName = taskInput.value.trim();
+
+            if (taskName) {
+                tasks.push({ name: taskName, completed: false });
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                taskInput.value = '';
+                renderTasks();
+            }
+        };
+
+        function toggleTask(index) {
+            tasks[index].completed = !tasks[index].completed;
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        function editTask(index) {
+            const newTaskName = prompt('Edit task:', tasks[index].name);
+            if (newTaskName) {
+                tasks[index].name = newTaskName;
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                renderTasks();
+            }
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        function toggleAllTasks() {
+            const allChecked = document.getElementById('selectAll').checked;
+            tasks.forEach(task => task.completed = allChecked);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        renderTasks();
+    </script>
+</body>
+
+</html>

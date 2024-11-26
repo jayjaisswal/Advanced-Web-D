@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealing Hand</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Dealing Hand Interface</h2>
+    <form action="/section-incharge" method="POST">
+        <div class="mb-3">
+            <label for="rollNumber" class="form-label">Roll Number:</label>
+            <input type="text" class="form-control" id="rollNumber" name="rollNumber" value="<%= formData.rollNumber || '' %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="internalNumber" class="form-label">Internal Number:</label>
+            <input type="text" class="form-control" id="internalNumber" name="internalNumber" value="<%= formData.internalNumber || '' %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="semester" class="form-label">Semester:</label>
+            <input type="text" class="form-control" id="semester" name="semester" value="<%= formData.semester || '' %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="studentName" class="form-label">Student Name:</label>
+            <input type="text" class="form-control" id="studentName" name="studentName" value="<%= formData.studentName || '' %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="studentEmail" class="form-label">Student Email:</label>
+            <input type="email" class="form-control" id="studentEmail" name="studentEmail" value="<%= formData.studentEmail || '' %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="remark" class="form-label">Remark:</label>
+            <textarea class="form-control" id="remark" name="remark"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealing Hand</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Dealing Hand Interface</h2>
+    <form action="/section-incharge" method="POST">
+        <div class="mb-3">
+            <label for="rollNumber" class="form-label">Roll Number:</label>
+            <input type="text" class="form-control" id="rollNumber" name="rollNumber" value="<%= formData.rollNumber || '' %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="internalNumber" class="form-label">Internal Number:</label>
+            <input type="text" class="form-control" id="internalNumber" name="internalNumber" value="<%= formData.internalNumber || '' %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="semester" class="form-label">Semester:</label>
+            <input type="text" class="form-control" id="semester" name="semester" value="<%= formData.semester || '' %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="studentName" class="form-label">Student Name:</label>
+            <input type="text" class="form-control" id="studentName" name="studentName" value="<%= formData.studentName || '' %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="studentEmail" class="form-label">Student Email:</label>
+            <input type="email" class="form-control" id="studentEmail" name="studentEmail" value="<%= formData.studentEmail || '' %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="remark" class="form-label">Remark:</label>
+            <textarea class="form-control" id="remark" name="remark"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+</body>
+</html> -->

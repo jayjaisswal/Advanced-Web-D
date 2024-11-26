@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ 
+ 
+</head>
+<body>
+
+<div class="container">
+  <h2>Login Form</h2>
+  <form action="SuccessfullyLogin.html">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="Password">Password:</label>
+      <input type="password" class="form-control" id="Password" placeholder="Enter password" name="Password" required>
+    </div>
+    <div class="form-group">
+      <label for="phone">Mob No.</label>
+      <input type="number" class="form-control" id="phone" placeholder="Enter phone number" name="phone" required min="0" max="9999999999">
+    </div>
+    <div class="form-class">
+        <label for="Gender">Select Gender</label>
+        <select name="Gender" id="Gender" class="form-control">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select>
+    </div>
+    <div class="checkbox">
+      <label><input type="checkbox" name="remember"> Remember me</label>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

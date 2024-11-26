@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Note Pad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .toolbar {
+            margin-bottom: 10px;
+        }
+
+        button, select {
+            margin-right: 5px;
+        }
+
+        .editor {
+            border: 1px solid #ccc;
+            min-height: 200px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .notes {
+            margin-top: 20px;
+        }
+
+        .note {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+
+        }
+
+        .note button {
+            margin-left: 10px; /* Add margin for better spacing */
+            padding: 5px 10px; /* Add padding for better click area */
+            border: none; /* Remove default border */
+            border-radius: 5px; /* Rounded corners for buttons */
+            cursor: pointer; /* Pointer cursor for buttons */
+            background-color: #000; /* Button background color */
+            color: white; /* Button text color */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Note Pad</h1>
+        <div class="toolbar">
+            <button onclick="formatText('bold')"><i class="fa-solid fa-bold"></i></button>
+            <button onclick="formatText('italic')"><i class="fa-solid fa-italic"></i></button>
+            <button onclick="formatText('underline')"><i class="fa-solid fa-underline"></i></button>
+            <select id="heading" onchange="formatText('heading')">
+                <option value="">Font</option>
+                <option value="h1">H1</option>
+                <option value="h2">H2</option>
+                <option value="h3">H3</option>
+                <option value="h4">H4</option>
+                <option value="h5">H5</option>
+                <option value="h6">H6</option>
+            </select>
+            <button onclick="addNote()"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <div id="editor" contenteditable="true" class="editor" placeholder="Write your note here..."></div>
+        <div id="notes" class="notes"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadNotes);
+        let editIndex = -1; // Index to track the note being edited
+
+        function formatText(command) {
+            if (command === 'heading') {
+                const headingSelect = document.getElementById('heading');
+                const selectedValue = headingSelect.value;
+                document.execCommand('formatBlock', false, selectedValue);
+                headingSelect.value = ""; // Reset selection
+            } else {
+                document.execCommand(command, false, null);
+            }
+        }
+
+        function addNote() {
+            const editor = document.getElementById('editor');
+            const noteContent = editor.innerHTML.trim();
+            if (noteContent) {
+                const notes = getNotes();
+
+                if (editIndex === -1) {
+                    // If not editing, add a new note
+                    notes.push(noteContent);
+                } else {
+                    // If editing, update the existing note
+                    notes[editIndex] = noteContent;
+                    editIndex = -1; // Reset edit index after updating
+                }
+
+                // Save updated notes to localStorage
+                localStorage.setItem('notes', JSON.stringify(notes));
+                editor.innerHTML = ''; // Clear editor
+                loadNotes(); // Refresh the notes display
+            } else {
+                alert('Please write something before adding a note.');
+            }
+        }
+
+        function loadNotes() {
+            const notesContainer = document.getElementById('notes');
+            notesContainer.innerHTML = '';
+            const notes = getNotes(); // Retrieve notes from localStorage
+
+            // Display each note with delete and edit buttons
+            notes.forEach((note, index) => {
+                const noteDiv = document.createElement('div');
+                noteDiv.classList.add('note');
+                noteDiv.innerHTML = `
+                    ${note}
+                    <div>
+                        <button onclick="deleteNote(${index})">Delete</button>
+                        <button class="edit" onclick="editNote(${index})">Edit</button>
+                    </div>
+                `;
+                notesContainer.appendChild(noteDiv);
+            });
+        }
+
+        function deleteNote(index) {
+            const notes = getNotes();
+            notes.splice(index, 1); // Remove note at the specified index
+            localStorage.setItem('notes', JSON.stringify(notes)); // Update localStorage
+            loadNotes(); // Refresh the notes display
+        }
+
+        function editNote(index) {
+            const notes = getNotes();
+            const editor = document.getElementById('editor');
+            editor.innerHTML = notes[index]; // Populate editor with the note content
+            editIndex = index; // Set the index of the note being edited
+        }
+
+        function getNotes() {
+            // Retrieve notes from localStorage or return an empty array if none exist
+            return JSON.parse(localStorage.getItem('notes')) || [];
+        }
+    </script>
+</body>
+</html>

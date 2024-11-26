@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Academic</title>
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f4f7;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        input[readonly],
+        textarea[readonly] {
+            background-color: #f9f9f9;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+   
+    <form action="/dr-academic" method="POST">
+        <h1>Dr. Academic </h1>
+            <label for="rollNumber">Roll Number:</label>
+            <input type="text" name="rollNumber" value="<%= form.rollNumber %>" readonly><br>
+    
+            <label for="semester">Semester:</label>
+            <input type="text" name="semester" value="<%= form.semester %>" readonly><br>
+    
+            <label for="studentName">Student Name:</label>
+            <input type="text" name="studentName" value="<%= form.studentEmail %>" readonly><br>
+    
+            <label for="dealingHandRemark">Dealing Hand Remark:</label>
+            <textarea name="dealingHandRemark" readonly><%= form.dealingHandRemark %></textarea><br>
+
+            <label for="dealingHandRemark">Dean Academics Remark:</label>
+            <textarea name="dealingHandRemark" rows="4" readonly><%= form.deanRemark %></textarea><br>
+
+            <input type="hidden" name="rollno" id="formId" value="<%= form.rollNumber %>"> 
+        <label for="remark">Dr. Academic Remark:</label>
+        <textarea name="remark" id="remark" required></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

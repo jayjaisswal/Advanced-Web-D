@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .user-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #item-chart {
+            width: 100%;
+            height: 400px;
+        }
+        .item-list {
+            margin-top: 20px;
+        }
+        .item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Dashboard</h1>
+    <div class="user-container">
+        <h2>Add Item</h2>
+        <form id="add-item-form">
+            <input type="text" id="item-name" placeholder="Item Name" required>
+            <input type="number" id="item-price" placeholder="Item Price" required>
+            <input type="date" id="item-date" required> <!-- New date input -->
+            <select id="item-category" required>
+                <option value="">Select Category</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Health">Health</option>
+                <option value="Other">Other</option>
+            </select>
+            <button type="submit">Add Item</button>
+        </form>
+        <h2>Your Items</h2>
+        <div class="item-list" id="item-list"></div>
+        <h2>Item Report</h2>
+        <select id="time-frame-select">
+            <option value="daily">Daily</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+        </select>
+        <canvas id="item-chart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let items = JSON.parse(localStorage.getItem('items')) || [];
+
+        document.getElementById('add-item-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const itemName = document.getElementById('item-name').value;
+            const itemPrice = document.getElementById('item-price').value;
+            const itemDate = document.getElementById('item-date').value; // Get the date
+            const itemCategory = document.getElementById('item-category').value;
+
+            const newItem = { id: Date.now(), name: itemName, price: Number(itemPrice), date: itemDate, category: itemCategory };
+            items.push(newItem);
+            localStorage.setItem('items', JSON.stringify(items));
+            document.getElementById('add-item-form').reset();
+            updateItemList(); // Update the item list after adding a new item
+            generateChart(); // Generate chart after adding new item
+        });
+
+        document.getElementById('time-frame-select').addEventListener('change', function() {
+            generateChart();
+        });
+
+        function updateItemList() {
+            const itemList = document.getElementById('item-list');
+            itemList.innerHTML = ''; // Clear previous items
+            items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('item');
+                itemDiv.textContent = `${item.name} - ₹${item.price} (${item.category}) on ${item.date}`;
+                itemList.appendChild(itemDiv);
+            });
+        }
+
+        function generateChart() {
+            const ctx = document.getElementById('item-chart').getContext('2d');
+            const timeFrame = document.getElementById('time-frame-select').value;
+
+            // Filter or aggregate data based on the time frame
+            const filteredItems = filterItemsByTimeFrame(timeFrame);
+            const labels = filteredItems.map(item => item.name);
+            const values = filteredItems.map(item => item.price);
+
+            if (window.chart) {
+                window.chart.destroy(); // Destroy previous chart instance if it exists
+            }
+
+            window.chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Item Prices',
+                        data: values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: `Item Prices (${timeFrame.charAt(0).toUpperCase() + timeFrame.slice(1)})`
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+
+        function filterItemsByTimeFrame(timeFrame) 
+        {
+            const today = new Date();
+            return items.filter(item => {
+                const itemDate = new Date(item.date);
+                if (timeFrame === 'daily') 
+                {
+                    const itemDate = new Date(item.date).toISOString().slice(0, 10);
+                    const todayString = today.toISOString().slice(0, 10);
+                    return itemDate === todayString; 
+                }
+                else if (timeFrame === 'monthly') {
+                    return itemDate.getMonth() === today.getMonth() && itemDate.getFullYear() === today.getFullYear();
+                } else if (timeFrame === 'yearly') {
+                    return itemDate.getFullYear() === today.getFullYear();
+                }
+                return false;
+            });
+        }
+        updateItemList();
+        generateChart();
+    </script>
+</body>
+</html>
